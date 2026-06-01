@@ -183,6 +183,13 @@ pub fn main() !void {
         try cases.testRespondToEvent(&client);
     }
 
+    if (shouldRun("meetings")) {
+        std.debug.print("\n\x1b[1mValidation — Online Meeting Transcripts:\x1b[0m\n", .{});
+        try cases.testListMeetingTranscriptsValidation(&client);
+        try cases.testListMeetingTranscriptsConflict(&client);
+        try cases.testGetMeetingTranscriptMissingId(&client);
+    }
+
     if (shouldRun("onedrive")) {
         std.debug.print("\n\x1b[1mLifecycle — OneDrive:\x1b[0m\n", .{});
         try cases.testOneDriveLifecycle(&client);

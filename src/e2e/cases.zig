@@ -14,6 +14,7 @@ const channels = @import("cases/channels.zig");
 const sharepoint = @import("cases/sharepoint.zig");
 const onedrive = @import("cases/onedrive.zig");
 const journeys = @import("cases/journeys.zig");
+const meetings = @import("cases/meetings.zig");
 
 // Protocol + auth.
 pub const testInitialize = protocol.testInitialize;
@@ -83,3 +84,9 @@ pub const testOneDriveLifecycle = onedrive.testOneDriveLifecycle;
 pub const testChatJourneySearchAndSend = journeys.testChatJourneySearchAndSend;
 pub const testBatchDeleteEmails = journeys.testBatchDeleteEmails;
 pub const testDiscoveryJourneyChannelByName = journeys.testDiscoveryJourneyChannelByName;
+
+// Online meeting transcripts (validation-only — real transcripts can't be
+// faked from the API side).
+pub const testListMeetingTranscriptsValidation = meetings.testListMeetingTranscriptsValidation;
+pub const testListMeetingTranscriptsConflict = meetings.testListMeetingTranscriptsConflict;
+pub const testGetMeetingTranscriptMissingId = meetings.testGetMeetingTranscriptMissingId;

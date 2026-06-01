@@ -32,6 +32,7 @@ const scopes =
     "ChannelMessage.ReadWrite " ++
     "Sites.ReadWrite.All " ++
     "Files.ReadWrite " ++
+    "OnlineMeetingTranscript.Read.All " ++
     "offline_access";
 
 /// What Microsoft sends back when we request a device code.

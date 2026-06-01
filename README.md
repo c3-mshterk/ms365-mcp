@@ -1,6 +1,6 @@
 # ms365-mcp
 
-A Microsoft 365 MCP server that's small enough you forget it's running. 67 tools across Teams, Outlook, Calendar, SharePoint, and OneDrive. Built in Zig — no Node, no Python, no runtime dependencies. Statically linked.
+A Microsoft 365 MCP server that's small enough you forget it's running. 71 tools across Teams, Outlook, Calendar, SharePoint, and OneDrive. Built in Zig — no Node, no Python, no runtime dependencies. Statically linked.
 
 **The numbers that matter** (measured, not estimated):
 
@@ -54,6 +54,8 @@ Downloads the right binary for your platform (macOS/Linux, ARM64/x86_64) to `~/.
 **Drafts** (7) — create-draft, send-draft, update-draft, delete-draft, add-attachment, list-attachments, remove-attachment
 
 **Calendar** (8) — list-calendar-events, get-calendar-event, create-calendar-event, update-calendar-event, delete-calendar-event, find-meeting-times, get-schedule, respond-to-event
+
+**Online meeting transcripts** (2) — list-meeting-transcripts, get-meeting-transcript (Teams meeting transcripts via Microsoft Graph; signed-in user must be the meeting organizer)
 
 **Teams Chat** (7) — list-chats, search-chats, list-chat-messages, search-chat-messages, send-chat-message, create-chat, delete-chat-message
 

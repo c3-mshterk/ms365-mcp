@@ -352,6 +352,25 @@ const respond_event_props = [_]PropSpec{
     .{ .name = "sendResponse", .type = "boolean", .description = "Optional — whether to notify the organizer. Default true." },
 };
 
+// --- Online meeting transcript props ---
+
+// Shared meeting-identity description, attached to each of the three
+// mutually-exclusive identifier props on the transcript tools.
+const meeting_identity_note = "Provide exactly one of: meetingId, joinUrl, or eventId.";
+
+const list_transcripts_props = [_]PropSpec{
+    .{ .name = "meetingId", .type = "string", .description = "The onlineMeeting ID (from a previous list-meeting-transcripts call, or resolved via joinUrl/eventId). " ++ meeting_identity_note },
+    .{ .name = "joinUrl", .type = "string", .description = "The Teams meeting join URL (e.g. https://teams.microsoft.com/l/meetup-join/... or https://teams.microsoft.com/meet/...). The signed-in user must be the meeting organizer. " ++ meeting_identity_note },
+    .{ .name = "eventId", .type = "string", .description = "Calendar event ID from list-calendar-events. The event must have a Teams meeting attached (isOnlineMeeting=true). " ++ meeting_identity_note },
+};
+
+const get_transcript_props = [_]PropSpec{
+    .{ .name = "transcriptId", .type = "string", .description = "The transcript ID from list-meeting-transcripts." },
+    .{ .name = "meetingId", .type = "string", .description = "The onlineMeeting ID. " ++ meeting_identity_note },
+    .{ .name = "joinUrl", .type = "string", .description = "The Teams meeting join URL. The signed-in user must be the organizer. " ++ meeting_identity_note },
+    .{ .name = "eventId", .type = "string", .description = "Calendar event ID with a Teams meeting attached. " ++ meeting_identity_note },
+};
+
 const send_chat_props = [_]PropSpec{
     .{ .name = "chatId", .type = "string", .description = "The ID of the chat to send the message to" },
     .{ .name = "message", .type = "string", .description = "The message text to send" },
@@ -495,6 +514,17 @@ const all_tools = [_]ToolSpec{
         .description = "Accept, decline, or tentatively accept a meeting invite you've received. Pass the eventId from list-calendar-events and an action of 'accept', 'decline', or 'tentativelyAccept'.",
         .props = &respond_event_props,
         .required = &.{ "eventId", "action" },
+    },
+    .{
+        .name = "list-meeting-transcripts",
+        .description = "List the auto-generated transcripts available for a Teams online meeting. Identify the meeting by exactly one of: meetingId (onlineMeeting id), joinUrl (Teams meeting URL), or eventId (calendar event id from list-calendar-events; the event must have isOnlineMeeting=true). Returns each transcript's id and createdDateTime; feed the id into get-meeting-transcript to read the content. The signed-in user must be the meeting organizer.",
+        .props = &list_transcripts_props,
+    },
+    .{
+        .name = "get-meeting-transcript",
+        .description = "Download a Teams meeting transcript as WebVTT text. Identify the meeting by exactly one of meetingId/joinUrl/eventId (see list-meeting-transcripts) and pass the transcriptId returned by that tool. Requires the OnlineMeetingTranscript.Read.All delegated permission and that the signed-in user is the meeting organizer.",
+        .props = &get_transcript_props,
+        .required = &.{"transcriptId"},
     },
     // --- Email ---
     .{

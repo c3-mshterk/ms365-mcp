@@ -34,6 +34,7 @@ const auth_tools = @import("tools/auth_tools.zig");
 const email_tools = @import("tools/email.zig");
 const draft_tools = @import("tools/drafts.zig");
 const calendar_tools = @import("tools/calendar.zig");
+const meeting_tools = @import("tools/meetings.zig");
 const chat_tools = @import("tools/chat.zig");
 const channel_tools = @import("tools/channels.zig");
 const sharepoint_tools = @import("tools/sharepoint.zig");
@@ -102,6 +103,8 @@ const tool_handlers = std.StaticStringMap(Handler).initComptime(.{
     .{ "find-meeting-times", calendar_tools.handleFindMeetingTimes },
     .{ "get-schedule", calendar_tools.handleGetSchedule },
     .{ "respond-to-event", calendar_tools.handleRespondToEvent },
+    .{ "list-meeting-transcripts", meeting_tools.handleListMeetingTranscripts },
+    .{ "get-meeting-transcript", meeting_tools.handleGetMeetingTranscript },
     // --- Teams channels ---
     .{ "list-teams", channel_tools.handleListTeams },
     .{ "list-channels", channel_tools.handleListChannels },
