@@ -32,6 +32,7 @@ const scopes =
     "ChannelMessage.ReadWrite " ++
     "Sites.ReadWrite.All " ++
     "Files.ReadWrite " ++
+    "OnlineMeetings.Read " ++
     "OnlineMeetingTranscript.Read.All " ++
     "offline_access";
 

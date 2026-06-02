@@ -42,9 +42,12 @@ const ObjectMap = std.json.ObjectMap;
 /// failure (missing/conflicting args, event without a Teams meeting,
 /// Graph error, etc.) sends an error response and returns null.
 fn resolveMeetingId(ctx: ToolContext, args: ObjectMap, token: []const u8) ?[]u8 {
-    const meeting_id = json_rpc.getStringArg(args, "meetingId");
-    const join_url = json_rpc.getStringArg(args, "joinUrl");
-    const event_id = json_rpc.getStringArg(args, "eventId");
+    // Treat empty strings as absent — callers sometimes send "" for an
+    // unset field, and downstream Graph calls / path builders must never
+    // see an empty id or join URL.
+    const meeting_id = nonEmpty(json_rpc.getStringArg(args, "meetingId"));
+    const join_url = nonEmpty(json_rpc.getStringArg(args, "joinUrl"));
+    const event_id = nonEmpty(json_rpc.getStringArg(args, "eventId"));
 
     // Count provided inputs. Zig has no boolean-to-int coercion, so we
     // compare to null and sum 0/1 explicitly.
@@ -380,6 +383,16 @@ pub fn handleGetMeetingTranscript(ctx: ToolContext) void {
     // may exceed comfortable context size; if that becomes a problem we'll
     // add a `save: true` flag that routes through binary_download.zig.
     ctx.sendResult(response);
+}
+
+/// Treat empty strings as absent. Callers may send `""` for an optional
+/// field; we don't want to count that as "provided" or pass it into a URL.
+fn nonEmpty(val: ?[]const u8) ?[]const u8 {
+    if (val) |s| {
+        if (s.len == 0) return null;
+        return s;
+    }
+    return null;
 }
 
 /// Pull a string field from a JSON object, returning "" if missing/non-string.
